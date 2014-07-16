@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Polybutton module
+ *
+ */
+
+/**
+ * Implements hook_theme()
+ */ 
+function polybutton_theme($existing, $type, $theme, $path) {
+  return array(
+    'polybutton' => array(
+      'variables' => array(
+        'class' => '',
+        'href' => '',
+        'style' => 'bar',
+        'type' => 'button',
+        'value' => '',
+        ),
+    ),
+  );
+}
+
+/**
+ * Returns HTML for a polybutton
+ * 
+ * @param $variables
+ *   An associative array containing:
+ *   - type: type of button generated (button/submit/reset)
+ *   - style: display style of the button (bar/icon)
+ *   - value: String for the button label
+ *   - href: URL for the button
+ *   - class: CSS class for the button
+ *
+ * @see http://www.csskarma.com/blog/polybutton/
+ */
+function theme_polybutton($variables) {
+  drupal_add_js(drupal_get_path('module', 'polybutton') . '/polybutton.js');
+  $type = $variables['type'];
+  $style = $variables['style'];
+  $value = $variables['value'];
+  $href = $variables['href'];
+  $class = $variables['class'];
+  $output = <<<HTML
+<span data-accessible="button" 
+      data-type="$type"
+      data-value="$value"
+      data-href="$href"
+      data-class="polybutton polybutton-$style $class">
+  <noscript>
+    <a href="$href" class="polybutton polybutton-link $class">$value</a>
+  </noscript>
+</span>
+HTML;
+  return $output;
+}
